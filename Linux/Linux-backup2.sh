@@ -7,9 +7,9 @@ BACKUP_DIR="/home/ydh/"
 SMTP_CREDENTIALS_FILE="creds.txt"
 EMAIL_FROM="email_from.txt"
 EMAIL_TO="email_to"
-
+API_Key= "API_Key.txt"
 # Attempt to create a backup
-backup_status=$(restic -r $REPO --exclude-file$EXCLUDE_FILE backup $BACKUP_DIR 2>&1)
+backup_status=$(restic -r $REPO --exclude-file $EXCLUDE_FILE backup $BACKUP_DIR 2>&1)
 backup_log="$backup_status"
 
 # check if the backup command failed
@@ -40,6 +40,6 @@ JSON_PAYLOAD=$(printf '{"sender":"%s", "to": ["%s"], "subject": "%s", "text_body
 curl --request POST \
      --url https://api.smtp2go.com/v3/email/send \
      --header 'Content-Type: application/json' \
-     --header 'X-ssmtp2go-Api: api-key-here' \
+     --header "X-ssmtp2go-Api: $API_Key" \
      --header 'accept: application/json' \
      --data "$JSON_PAYLOAD"
