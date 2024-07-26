@@ -3,13 +3,12 @@ REPO="sftp:Truenas:../Restic/Ubuntu-laptop"
 EXCLUDE_FILE="excludes.txt"
 BACKUP_DIR="/home/ydh/"
 SMTP_CREDENTIALS_FILE="creds.txt"
-EMAIL_FILE="email.txt"
+EMAIL_FROM="email.txt"
+EMAIL_TO=""
 
-# Construct the email content as a single variable
-EMAIL_CONTENT=$(printf "Subject: %s\n\n%s" "$subject" "$body")
 
 # Prepare the JSON payload for the SMTP2GO API
-JSON_PAYLOAD=$(printf '{"to":"%s", "from":"%s", "subject":"%s", "text":"%s"}' "$EMAIL_FILE" "$SMTP_USER" "$subject" "$EMAIL_CONTENT")
+#JSON_PAYLOAD=$(printf '{"to":"%s", "from":"%s", "subject":"%s", "text":"%s"}' "$EMAIL_TO" "$SMTP_USER" "$subject" "$EMAIL_CONTENT")
 
 # Send the email using SMTP2GO API
 curl --request POST \
@@ -17,7 +16,7 @@ curl --request POST \
      --header 'Content-Type: application/json' \
      --header 'X-ssmtp2go-Api: api-key-here' \
      --header 'accept: application/json' \
-     --data 
+     --data "$JSON_PAYLOAD"
 
 
 # Check for errors in the SMTP2GO response
