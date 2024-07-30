@@ -2,6 +2,7 @@
 # Initialize variables
 backup_status=""
 back_log=""
+CHECK_STATUS=""
 REPO="sftp:Truenas:../Restic/Ubuntu-laptop"
 EXCLUDE_FILE="excludes.txt"
 BACKUP_DIR="/home/ydh/"
@@ -22,6 +23,11 @@ else
     EMAIL_SUBJECT="Backup Succeeded"
 fi
 
+# Snapshot check
+CHECK_STATUS=$(restic -r $REPO --password-file $PASSWORD_FILE check)
+
+NO_ERRORS_FOUND=$(echo "$CHECK_STATUS" | grep -i "no errors")
+
 # Status about backup
 NEW_ADDED_SIZE=$(echo "$backup_log" | grep -o 'added [0-9]\+' | cut -d' ' -f2)
 
@@ -29,7 +35,7 @@ NEW_ADDED_SIZE=$(echo "$backup_log" | grep -o 'added [0-9]\+' | cut -d' ' -f2)
 SNAPSHOT_COUNT=$(restic -r $REPO snapshots --password-file $PASSWORD_FILE --json | jq '.[] | .id' | wc -l)
 
 # Generate email body
-EMAIL_BODY="Backup Log:\n$backup_log\n\nNew Added Size: $NEW_ADDED_SIZE bytes\nSnapshot Count: $SNAPSHOT_COUNT"
+EMAIL_BODY="Backup Log:\n$backup_log\n\nNew Added Size: $NEW_ADDED_SIZE bytes\nSnapshot Count: $SNAPSHOT_COUNT \n\nRestic Repo Check Status:\n$NO_ERRORS_FOUND"
 
 JSON_PAYLOAD=$(printf '{"sender":"%s", "to": ["%s"], "subject": "%s", "text_body": "%s"}' "$(cat $EMAIL_FROM)" "$(cat $EMAIL_TO)" "$EMAIL_SUBJECT" "$EMAIL_BODY" | sed ':a;N;$!ba;s/\n/\\n/g')
 
