@@ -23,6 +23,9 @@ else
     EMAIL_SUBJECT="Backup Succeeded"
 fi
 
+# Retantion policy for snapshots
+restic -r $REPO --password-file $PASSWORD_FILE forget  --keep-daily 3 --keep-weekly 4 --keep-monthly 3 --keep-yearly 1 --prune
+
 # Snapshot check
 CHECK_STATUS=$(restic -r $REPO --password-file $PASSWORD_FILE check)
 
