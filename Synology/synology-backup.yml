@@ -1,0 +1,14 @@
+version: 2
+
+locations:
+  synology-photo:
+    from: /mnt/synology-photo
+    to: hetzener
+
+  hooks:
+    prevalidate:
+
+backends:
+  hetzener:
+    type: sftp
+    path: 
