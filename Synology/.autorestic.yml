@@ -3,12 +3,12 @@ version: 2
 locations:
   synology-photo:
     from: /mnt/synology-photo
-    to: hetzener
+    to: hetzner
 
   hooks:
     prevalidate:
 
 backends:
-  hetzener:
+  hetzner:
     type: sftp
-    path: 
+    path: storagebox:resticPhoto
