@@ -5,10 +5,19 @@ locations:
     from: /mnt/synology-photo
     to: hetzner
 
-  hooks:
-    prevalidate:
+    hooks: 
+      prevalidate: 
+        - sudo mount -t cifs //172.16.3.2/home/Photos /mnt/synology-photo  -o credentials=/home/ansible/.creds/creds
+      
+      success:
+        - sudo umount -a -t cifs -l
+
+      failure: 
+        - sudo umount -a -t cifs -l
+
 
 backends:
   hetzner:
     type: sftp
     path: storagebox:resticPhoto
+    requirekey: true
