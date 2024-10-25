@@ -16,8 +16,8 @@ locations:
       prevalidate: 
         - sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner restic_backup@172.16.3.2:/homes/YDH/Photos /mnt/Synology-ydh -o allow_other,default_permissions
         - sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner restic_backup@172.16.3.2:/homes/Anne/Photos /mnt/Synology-Anne -o allow_other,default_permissions
-        - "sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner restic_backup@172.16.3.2:/homes/Dirk De Herdt/Photos /mnt/Synology-Dirk -o allow_other,default_permissions"
-        - "sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner restic_backup@172.16.3.2:/homes/Sandra Verheyen/Photos /mnt/Synology-Sandra -o allow_other,default_permissions"
+        - sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner "restic_backup@172.16.3.2:/homes/Dirk De Herdt/Photos" /mnt/Synology-Dirk -o allow_other,default_permissions
+        - sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner "restic_backup@172.16.3.2:/homes/Sandra Verheyen/Photos" /mnt/Synology-Sandra -o allow_other,default_permissions
         #- sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner restic_backup@172.16.3.2:/ /mnt/Synology-Shared -o allow_other,default_permissions
       
       success:
