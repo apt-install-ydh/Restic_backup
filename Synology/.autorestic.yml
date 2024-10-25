@@ -2,18 +2,29 @@ version: 2
 
 locations:
   synology-photo:
-    from: /mnt/synology-photo
-    to: hetzner
+    from:
+      - /mnt/Synology-ydh
+      - /mnt/Synology-Anne
+      - /mnt/Synology-Dirk
+      - /mnt/Synology-Sandra
+    to: local
+
+    copy:
+      local: hetzner
 
     hooks: 
       prevalidate: 
-        - sudo mount -t cifs //172.16.3.2/home/Photos /mnt/synology-photo  -o credentials=/home/ansible/.creds/creds
+        - sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner restic_backup@172.16.3.2:/homes/YDH/Photos /mnt/Synology-ydh -o allow_other,default_permissions
+        - sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner restic_backup@172.16.3.2:/homes/Anne/Photos /mnt/Synology-Anne -o allow_other,default_permissions
+        - "sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner restic_backup@172.16.3.2:/homes/Dirk De Herdt/Photos /mnt/Synology-Dirk -o allow_other,default_permissions"
+        - "sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner restic_backup@172.16.3.2:/homes/Sandra Verheyen/Photos /mnt/Synology-Sandra -o allow_other,default_permissions"
+        #- sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner restic_backup@172.16.3.2:/ /mnt/Synology-Shared -o allow_other,default_permissions
       
       success:
-        - sudo umount -a -t cifs -l
+        - echo "success"
 
       failure: 
-        - sudo umount -a -t cifs -l
+        - echo "failure"
 
 
 backends:
@@ -21,3 +32,7 @@ backends:
     type: sftp
     path: storagebox:resticPhoto
     requirekey: true
+
+  local:
+    type: local
+    path: /media/data/local
