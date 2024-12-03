@@ -10,12 +10,19 @@ locations:
       - /mnt/administratie
       - /mnt/Synology-Shared
     to: local
+    cron: '*/5 * * * *'
 
     copy:
       local: hetzner
 
     hooks: 
       prevalidate: 
+        - fusermount3 -u /mnt/Synology-ydh
+        - fusermount3 -u /mnt/Synology-Anne
+        - fusermount3 -u /mnt/Synology-Dirk 
+        - fusermount3 -u /mnt/Synology-Sandra
+        - fusermount3 -u /mnt/Synology-Shared
+        - fusermount3 -u /mnt/administratie/
         - sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner restic_backup@172.16.3.2:/homes/YDH/Photos /mnt/Synology-ydh -o allow_other,default_permissions
         - sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner restic_backup@172.16.3.2:/homes/Anne/Photos /mnt/Synology-Anne -o allow_other,default_permissions
         - sshfs -o IdentityFile=/home/ydh/.ssh/restic_backup_nas_hetzner "restic_backup@172.16.3.2:/homes/Dirk De Herdt/Photos" /mnt/Synology-Dirk -o allow_other,default_permissions
