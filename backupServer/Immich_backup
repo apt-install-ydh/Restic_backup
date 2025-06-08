@@ -1,0 +1,27 @@
+#!/bin/bash
+# vars 
+trueNasImmichRepo=sftp:truenas:/mnt/DataStore01/immichBackup/immichResticRepo
+hetznerImmichRepo=
+backupLocation=~/restic_snapshot 
+trueNasImmichRepoPasswordFile=./trueNasImmichRepoPasswordFile.secret
+hetznerImmichRepoPasswordFile=./hetznerImmichRepoPasswordFile.secret
+
+# script
+## start health check
+curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/7728d6d9-a6ed-4866-bd61-2e007b20ebf8/start
+
+## mount share with sshfs
+sshfs -o IdentityFile=/home/ydh/.ssh/test-keys restic@172.16.3.4:/media/immich/immich-library/library ~/restic_snapshot -o default_permissions
+
+## back up command
+~/bin/restic -r $trueNasImmichRepo --password-file $trueNasImmichRepoPasswordFile backup $backupLocation --verbose --tag Immich 
+
+## finish health check
+curl -m 10 --retry 5 https://hc-ping.com/7728d6d9-a6ed-4866-bd61-2e007b20ebf8/$?
+
+## copy snapshot
+~/bin/restic -r $hetznerImmichRepo --from-password-file $hetznerImmichRepoPasswordFile copy --from-repo $trueNasImmichRepo --from-password-file $trueNasImmichRepoPasswordFile 
+
+
+## unmount sshfs share
+fusermount3 -u ~/restic_snapshot

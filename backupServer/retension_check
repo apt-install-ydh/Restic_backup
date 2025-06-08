@@ -1,0 +1,21 @@
+#!/bin/bash
+#vars
+trueNasImmichRepo=sftp:truenas:/mnt/DataStore01/immichBackup/immichResticRepo
+
+
+#script
+
+## Healthchecks.io start 
+
+## Repo checks
+restic -r $trueNasImmichRepo check
+
+## Renention Policy
+
+
+
+## Repo Prune's
+restic -r $trueNasImmichRepo prune
+
+
+## healthchecks.io end

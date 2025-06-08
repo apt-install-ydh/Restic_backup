@@ -4,3 +4,4 @@ API_Key.txt
 email_to.txt
 repo_password.txt
 .autorestic.env
+*.secret
