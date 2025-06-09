@@ -11,7 +11,7 @@ hetznerImmichRepoPasswordFile=./hetznerImmichRepoPasswordFile.secret
 curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/7728d6d9-a6ed-4866-bd61-2e007b20ebf8/start
 
 ## mount share with sshfs
-sshfs -o IdentityFile=/home/ydh/.ssh/test-keys restic@172.16.3.4:/media/immich/immich-library/library ~/restic_snapshot -o default_permissions
+sshfs -o IdentityFile=/home/ydh/.ssh/test-keys restic@immich:/media/immich/immich-library/library ~/restic_snapshot -o default_permissions
 
 ## back up command
 ~/bin/restic -r $trueNasImmichRepo --password-file $trueNasImmichRepoPasswordFile backup $backupLocation --verbose --tag Immich 
