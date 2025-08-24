@@ -7,6 +7,9 @@ trueNasImmichRepoPasswordFile=./trueNasImmichRepoPasswordFile.secret
 hetznerImmichRepoPasswordFile=./hetznerImmichRepoPasswordFile.secret
 
 # script
+# Delete tmp files
+rm -rf ~/.cache/restic/
+
 ## start health check
 curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/7728d6d9-a6ed-4866-bd61-2e007b20ebf8/start
 
